@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inference Engine</title>
+{% load staticfiles %}
+    <script src="{% static 'logic/js/jquery-1.11.3.min.js' %}"></script>
+
+<script>
+var final_num2=1;
+    $(document).ready(function () {
+
+        $(document).on('click','#process', function(e) {
+
+            var basestr=$('#test'+final_num2).val();
+            var rule=$('#rule'+(final_num2+1)).val();
+            if (basestr.length < 1) {
+                alert("Empty String");
+                return;
+            }
+             if (rule.length < 1) {
+                alert("No rule defined");
+                return;
+            }
+            $.ajax({
+               type:'GET',
+                url:'generate',
+                dataType:'json',
+                contentType: 'application/json',
+                data:{
+                    basestr:basestr,
+                    rule:rule,
+                },
+                success: function(response) {
+                    console.log(response);
+                    console.log(final_num2);
+                    final_num2 = final_num2 + 1;
+                    document.getElementById('col'+final_num2+'1').innerHTML= final_num2;
+                    document.getElementById('col'+final_num2+'2').innerHTML="<input class='textarea' type='text' id='test"+final_num2+"' name='test"+final_num2+"' value='"+response['resultstr']+"'>";
+
+                    temp_final_num2=final_num2+1;
+                    $("#maintbl").append("<tr><td id='col"+temp_final_num2+"1'></td><td id='col"+temp_final_num2+"2'></td><td id='col"+temp_final_num2+"3'><input class='textarea' type='text' id='rule"+temp_final_num2+"' name='rule"+temp_final_num2+"'></td></tr>")
+                },
+                error: function(err) {
+
+                }
+
+            });
+
+        });
+    });
+</script>
+
+
+    <style>
+
+.textarea
+{
+   display: block;
+   width: 100%;
+   height: 100%;
+}
+
+</style>
+
+
+</head>
+<body>
+<h2>Inference Engine</h2>
+
+<input type="button" id="process" value="Prove">
+<table id="maintbl" border="1">
+<col width="20">
+    <col width="500px">
+    <col width="100px">
+
+
+
+
+
+    <tr>
+
+    <td id="col12">1</td>
+
+    <td id="col12"><input class="textarea" type="text" id="test1" name="test1" value="{{ text1|default:"" }}"></td>
+        <td id="col13"><input class="textarea" type="text" id="rule1"></td>
+    </tr>
+ <tr>
+<td id="col21"></td>
+    <td id="col22"></td>
+    <td id="col23"><input class="textarea" type="text" id="rule2" name="rule2"></td>
+
+</table>
+</body>
+</html>
