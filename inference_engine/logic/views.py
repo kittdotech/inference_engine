@@ -16,7 +16,7 @@ def index(request):
     return render(request,'logic/index.html')
 
 def replace_relations(rule2,sent_num,parsed_str1):
-
+    """Replca Function"""
     parsed_str=""
     for each_word in parsed_str1.split():
         for row in ws.rows:
