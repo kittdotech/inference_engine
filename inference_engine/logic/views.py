@@ -631,7 +631,7 @@ def replace_relations(rule2,sent_num,parsed_str1):
 
 def generate(request):
     print request
-
+    tot_sent = request.session.get('tot_sent',[])
     idf_var = [chr(122 - i) for i in range(25)]
     def_var = [chr(98 + i) + "'" for i in range(25)]
     dv_nam = []
@@ -642,8 +642,8 @@ def generate(request):
     rule2 = rule.split(' ')
     sent_num = rule2[1]
     rule2 = rule2[0]
-
     list1 = categorize_words(parsed_str1)
+    #tot_sent.append(list1)
 
     # if request.session.get('sample',0):
     #     sam1= request.session['sample']
@@ -653,14 +653,14 @@ def generate(request):
 
     if rule2 == 'rl':
         resultstr = replace_relations(rule2,sent_num,str1)
-
-
-
+        tot_sent.append(resultstr)
+        request.session['tot_sent']=tot_sent
     elif rule2 == 'WS':
 
         temp_list = word_sub(list1,def_var,dv_nam)
         resultstr = build_sent(temp_list)
-
+        tot_sent.append(resultstr)
+        request.session['tot_sent']=tot_sent
 
     elif rule2 == 'dfd a' or 'dfd some':
         temp_list = idf_elim(list1, idf_var)
@@ -749,3 +749,5 @@ sent_info = dfn_rn(sent_info, idf_var, def_var, dv_nam)
 
 
 pp = 7
+
+# some d EX IN e
