@@ -7,6 +7,7 @@
     <script src="{% static 'logic/js/jquery-1.11.3.min.js' %}"></script>
 
 <script>
+
 var final_num2=1;
     $(document).ready(function () {
 
@@ -32,14 +33,14 @@ var final_num2=1;
                     rule:rule,
                 },
                 success: function(response) {
-                    res1 = JSON.parse(response);
+
 
                     console.log(response);
-                    console.log(final_num2);
+
                     final_num2 = final_num2 + 1;
                     document.getElementById('col'+final_num2+'1').innerHTML= final_num2;
-                    document.getElementById('col'+final_num2+'2').innerHTML="<input class='textarea' type='text' id='test"+final_num2+"' name='test"+final_num2+"' value='"+response['resultstr']+"'>";
-
+                    document.getElementById('col'+final_num2+'2').innerHTML="<input class='textarea' type='text' id='test"+final_num2+"' id='test"+final_num2+"' name='test"+final_num2+"'>";
+                    document.getElementById('test'+final_num2).value=response.resultstr;
                     temp_final_num2=final_num2+1;
                    $("#maintbl").append("<tr><td id='col"+temp_final_num2+"1'></td><td id='col"+temp_final_num2+"2'></td><td id='col"+temp_final_num2+"3'><input class='textarea' type='text' id='rule"+temp_final_num2+"' name='rule"+temp_final_num2+"'></td></tr>")
                 },
