@@ -631,7 +631,12 @@ def replace_relations(rule2,sent_num,parsed_str1):
 
 def generate(request):
     print request
-    tot_sent = request.session.get('tot_sent',[])
+    final_num2=request.GET.get('final_num2',0)
+    if final_num2 in ['0','1']:
+        tot_sent=[]
+        request.session['tot_sent']=[]
+    else:
+        tot_sent = request.session.get('tot_sent',[])
     idf_var = [chr(122 - i) for i in range(25)]
     def_var = [chr(98 + i) + "'" for i in range(25)]
     dv_nam = []

@@ -20,6 +20,7 @@ var final_num2=1;
 
             var basestr=$('#test'+final_num2).val();
             var rule=$('#rule'+(final_num2+1)).val();
+
             if (basestr.length < 1) {
                 alert("Empty String");
                 return;
@@ -36,6 +37,7 @@ var final_num2=1;
                 data:{
                     basestr:basestr,
                     rule:rule,
+                    final_num2:final_num2
                 },
                 success: function(response) {
 
