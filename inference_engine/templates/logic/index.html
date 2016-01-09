@@ -11,6 +11,11 @@
 var final_num2=1;
     $(document).ready(function () {
 
+        $(document).on('click','#reset', function(e) {
+
+            location.reload();
+        });
+
         $(document).on('click','#process', function(e) {
 
             var basestr=$('#test'+final_num2).val();
@@ -71,7 +76,7 @@ var final_num2=1;
 <body>
 <h2>Inference Engine</h2>
 
-<input type="button" id="process" value="Prove">
+<input type="button" id="process" value="Prove"><input type="button" id="reset" value="Reset">
 <table id="maintbl" border="1">
 <col width="20">
     <col width="500px">
