@@ -445,16 +445,21 @@ def categorize_words(list1):
         str9 = i
         dict_cat = ""
         list_cat = words.keys()
-        for key, value in words.iteritems():
+        if isvariable(str9) == True:
+            word_types.append([str9, 'n'])
+        elif str9 == ' ':
+            pass
+        else:
+            for key, value in words.iteritems():
 
-            if type(value) == type([]):
-                if str9 in value:
-                    dict_cat = key
-                    break
-            elif type(value) == type({}):
-                if str9 in value.keys():
-                    dict_cat = key
-                    break
+                if type(value) == type([]):
+                    if str9 in value:
+                        dict_cat = key
+                        break
+                elif type(value) == type({}):
+                    if str9 in value.keys():
+                        dict_cat = key
+                        break
 
         word_types.append([str9, dict_cat])
 
@@ -473,9 +478,9 @@ def categorize_words(list1):
         elif value == 'tr':
             relation_type = 'tr'
             list1_cat[8] = key
-        elif value == 'd' and relation_type == ' ':
+        elif value == 'd' and (relation_type == '' or relation_type == ' '):
             list1_cat[0] = key
-        elif value == 'n' and relation_type == ' ':
+        elif value == 'n' and (relation_type == ' ' or relation_type == ''):
             list1_cat[1] = key
         elif value == 'd' and relation_type == 'r':
             list1_cat[3] = key
@@ -504,22 +509,24 @@ def word_sub(list2, def_var, dv_nam):
             dv_nam.append(temp_list)
     return list2
 
-def idf_elim(list1, idf_var):
+def idf_elim(idf_var, j,list1 = [], tot_sent = [], kind = False):
 
-    temp_list = [None] * 10
+    if kind == False:
+        list1 = tot_sent[j]
+
+    list2 = [None] * 10
     num = [0, 3, 6, 9]
     for i in num:
         if list1[i] == 'a' or list1[i] == 'some':
-            temp_list[1] = idf_var[0]
-            temp_list[2] = 'IG'
-            temp_list[4] = list1[i + 1]
+            list2[1] = idf_var[0]
+            list2[2] = 'IG'
+            list2[4] = list1[i + 1]
             list1[i] = None
             list1[i + 1] = idf_var[0]
-            tot_sent.append(temp_list)
+            #list1.append(list2)
             del idf_var[0]
-    list2 = [temp_list, list1]
 
-    return list2
+    return [list1,list2]
 
 
 def def_elim(list1, def_var):
@@ -640,13 +647,17 @@ def generate(request):
     idf_var = [chr(122 - i) for i in range(25)]
     def_var = [chr(98 + i) + "'" for i in range(25)]
     dv_nam = []
-    str1=request.GET['basestr']
+    str1=request.GET['basestr'].strip("() ")
+
+
+
     parsed_str1 = str1.split(' ')
     rule = request.GET['rule']
     print parsed_str1
     rule2 = rule.split(' ')
     sent_num = rule2[1]
     rule2 = rule2[0]
+
     list1 = categorize_words(parsed_str1)
     #tot_sent.append(list1)
 
@@ -668,7 +679,7 @@ def generate(request):
         request.session['tot_sent']=tot_sent
 
     elif rule2 == 'dfd a' or 'dfd some':
-        temp_list = idf_elim(list1, idf_var)
+        temp_list = idf_elim(idf_var,0,list1,[],True)
         str1 = build_sent(temp_list[0])
         str2 = build_sent(temp_list[1])
         resultstr = str1 + ' & ' + str2
