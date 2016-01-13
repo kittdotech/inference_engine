@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Inference Engine</title>
-{% load staticfiles %}
-    <script src="{% static 'logic/js/jquery-1.11.3.min.js' %}"></script>
+{% extends 'logic/base.html' %}
 
+{% block headextra %}
 <script>
 
 var final_num2=1;
@@ -72,11 +67,9 @@ var final_num2=1;
 }
 
 </style>
+{% endblock %}
 
-
-</head>
-<body>
-<h2>Inference Engine</h2>
+{% block content %}
 
 <input type="button" id="process" value="Prove"><input type="button" id="reset" value="Reset">
 <table id="maintbl" border="1">
@@ -101,5 +94,4 @@ var final_num2=1;
     <td id="col23"><input class="textarea" type="text" id="rule2" name="rule2"></td>
 
 </table>
-</body>
-</html>
+{% endblock %}
